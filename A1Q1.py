@@ -20,6 +20,4 @@ num_line = int(sys.stdin.readline())
 for _ in range(num_line):
     a = [int(s) for s in sys.stdin.readline().split()]
     m, k, n = a[0], a[1], a[2]
-    start_time = time.time()
     print(power_modulo(m, k, n))
-    print('---- %.6g seconds ----' % (time.time() - start_time))
