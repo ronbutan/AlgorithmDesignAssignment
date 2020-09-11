@@ -42,7 +42,6 @@ def tower_hanoi(disk):
         {'type': 'even counterclockwise', 'odd': 0, 'clock': -1, 'moves': -99, 'tower': 'Z', 'postoendonodd': 2,'postoendoneven': 1, 'mirror':-2},
         {'type': 'even clockwise', 'odd': 0, 'clock': 1, 'moves': -99, 'tower': 'Z', 'postoendonodd': 1,'postoendoneven': 2,'mirror':-2},
         ]
-    lstMoveCount = []
     pos = 0
     cur_min = -1
     cur_index = -1
@@ -50,10 +49,10 @@ def tower_hanoi(disk):
         if (lstMoves[i]['moves'] == -99):
             #reset parameters
             disk = [l.copy() for l in orig]
-            lstMoveCount = []
             pos = getPegIndexOfDiskOne(disk)
-            m = tower_hanoi2(pos, disk, lstMoves[i], lstMoveCount)
-            #print('# of moves for',lstMoves[i]['type'], 'is', m)
+
+            # start recursion
+            m = tower_hanoi2(pos, disk, lstMoves[i], 0)
             obj = lstMoves[i + lstMoves[i]['mirror']]
             if (m > -1 and (cur_min == -1 or m < cur_min)):
                     cur_min = m
@@ -73,8 +72,6 @@ def tower_hanoi(disk):
                     cur_min = remainingMoves
                     cur_index = i + lstMoves[i]['mirror']
             
-    #print(cur_index)
-    #print(lstMoves)
     if (cur_index == -1):
         print('impossible')
     elif (lstMoves[cur_index]['moves'] == 0):
@@ -84,18 +81,15 @@ def tower_hanoi(disk):
     
     return lstMoves
 
-def tower_hanoi2(pos, disk, movObj, lstMoveCount):
+def tower_hanoi2(pos, disk, movObj, moves):
     global nDisk,npegs, lstPegs
     #base cases
-    complete = [k for k in disk if len(k) == nDisk]
-    if (complete != []):
-        sumMoves = sum(lstMoveCount)
-        movObj['moves'] = sumMoves
+    if (len(disk[pos]) == nDisk):
+        movObj['moves'] = moves
         movObj['tower'] = lstPegs[pos]
-        #print('Final State', disk)
-        return sumMoves
+        return moves
     
-    lstContiguousDiskOne = getContiguousDiskOneStack(disk, pos)
+    lstContiguousDiskOne = getContiguousDiskOneStack(disk, pos) # n
     lenContiguousDiskOne = len(lstContiguousDiskOne)
     endPosOfDiskOneStack = -1
     maxDiskNo = lstContiguousDiskOne[-1]
@@ -113,23 +107,23 @@ def tower_hanoi2(pos, disk, movObj, lstMoveCount):
     disk[endPosOfDiskOneStack] = lstContiguousDiskOne + disk[endPosOfDiskOneStack]
     # update source stack to remove contiguous stack
     disk[pos] = disk[pos][lenContiguousDiskOne:]
-    # update Disk 1 peg index
+    # update peg index of peg having Disk 1
     pos = endPosOfDiskOneStack
     # update move count
-    lstMoveCount.append(2**lenContiguousDiskOne - 1)
+    moves = moves + 2**lenContiguousDiskOne - 1
+    #lstMoveCount.append(2**lenContiguousDiskOne - 1)
 
-    # compare remaining stacks w/o Disk 1 to initaite move
+    # compare remaining stacks w/o Disk 1 to initiate move
     a = 999 if not disk[(pos + 1) % npegs] else disk[(pos + 1) % npegs][0]
     b = 999 if not disk[(pos + 2) % npegs] else disk[(pos + 2) % npegs][0]
     if (a < b):
         disk[(pos + 2) % npegs].insert(0,disk[(pos + 1) % npegs].pop(0))
-        lstMoveCount.append(1)
+        moves = moves + 1
     elif (a > b):
         disk[(pos + 1) % npegs].insert(0,disk[(pos + 2) % npegs].pop(0))
-        lstMoveCount.append(1)
+        moves = moves + 1
     
-    #print('Before recursing', disk, 'Move array', lstMoveCount)
-    return tower_hanoi2(pos, disk, movObj, lstMoveCount)
+    return tower_hanoi2(pos, disk, movObj, moves)
 
 
 nDisk = 0
@@ -146,20 +140,36 @@ for _ in range(num_line):
     #print(result) 
     #print("--- %s seconds ---" % (time.time() - start_time)) 
 
-"""
-disk = [[19,20,21,24,31],[1,2,3,6,7,8,9,10,11,14,15,16,17,22,25,28,29,30,35],[4,5,12,13,18,23,26,27,32,33,34]]
-npegs = len(disk)
-#disk = [[1,2,7,8,11,12,15,16,17,22,25,26],[3,14,23,28],[4,5,6,9,10,13,18,19,20,21,24,27]]
-#disk = [[19,20,21,24],[1,2,3,6,7,8,9,10,11,14,15,16,17,22,25,28,29,30],[4,5,12,13,18,23,26,27]]
-#disk = [[19,20,21,24,31],[1,2,3,6,7,8,9,10,11,14,15,16,17,22,25,28,29,30,35],[4,5,12,13,18,23,26,27,32,33,34]]
-#disk = [[1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64],[2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50, 53, 56, 59, 62],[3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60, 63]]
+'''
+Analysis:
 
-tower_hanoi(disk)
-print("--- %s seconds ---" % (time.time() - start_time))
+n for loop to determine contigous stack with Disk 1
+T(n - 1) for recursive call to itself
+constants are not considered due to lower order
 
 
-#1 4, 2 5 8 9, 3 6 7 10
-#1,2,7,8,11,12,15,16,17,22,25,26 | 3,14,23,28 | 4,5,6,9,10,13,18,19,20,21,24,27
-#19,20,21,24 | 1,2,3,6,7,8,9,10,11,14,15,16,17,22,25,28,29,30 | 4,5,12,13,18,23,26,27
-#19,20,21,24,31 | 1,2,3,6,7,8,9,10,11,14,15,16,17,22,25,28,29,30,35 | 4,5,12,13,18,23,26,27,32,33,34
-"""
+T(n) = 1, when n = 0
+T(n) = T(n-1) + n, when n > 0
+
+T(0) = 1 (base case)
+
+T(n) = T(n-1) + n ------------------ (1)
+T(n-1) = T(n-2) + (n-1)
+T(n-2) = T(n-3) + (n-2)
+
+
+T(n) = T(n-2) + (n-1) + n ---------- (2)
+T(n) = T(n-3) + (n-2) + (n-1) + n -- (3)
+
+Do k times,
+
+T(n) = T(n-k) + (n-(k-1)) + (n-(k-2)) + ... + (n-1) + n ----- (4)
+
+Assume continuation to T(0) where n-k = 0 ==> n = k,
+T(n) = T(n-n) + (n-(n-1) + (n-(n-2)) + ... + (n-1) + n
+T(n) = T(0) + 1 + 2 + ... + (n-1) + n
+T(n) = 1 + 1 + 2 + ... + (n-1) + n
+T(n) = 1 + (n(n-1)/2)
+T(n) = O(n**2)
+
+'''

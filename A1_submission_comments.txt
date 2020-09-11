@@ -1,0 +1,5 @@
+A1Q1 - 4b6ababadbb6
+A1Q2 - d32cb496edf9
+
+A1Q1 time complexity - O(lgn)
+A1Q2 time complexity - O(n**2)
