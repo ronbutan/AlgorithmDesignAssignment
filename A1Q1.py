@@ -37,7 +37,7 @@ Assume, n/2^k = 1, then n = 2^k
 
 k = lg n
 
-T(n)    =   T(1) + Clgn
-        =   1 + b + a + Clgn
+T(n)    =  T(1) + Clgn
+        =  1 + b + a + Clgn
         = O(lgn)
 '''
