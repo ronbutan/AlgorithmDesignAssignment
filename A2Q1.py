@@ -71,8 +71,35 @@ class TreeNode:
             print(n._value, '@ level', n._level, 'root' if n._parent is None else 'left child' if n._parent._left == n else 'right child', 'Parent', n._parent._value if n._parent is not None else 'nil')
             self.pre_order_traversal(n._left)
             self.pre_order_traversal(n._right)
+    def pre_order_traversal2(self, n, arr):
+        if n is not None:
+            arr.append(n._value)
+            self.pre_order_traversal2(n._left,arr)
+            self.pre_order_traversal2(n._right,arr)
+    def in_order_traversal(self, n):
+        if n is not None:
+            self.pre_order_traversal(n._left)
+            print(n._value, '@ level', n._level, 'root' if n._parent is None else 'left child' if n._parent._left == n else 'right child', 'Parent', n._parent._value if n._parent is not None else 'nil')
+            self.pre_order_traversal(n._right)
+    def in_order_traversal2(self, n, arr):
+        if n is not None:
+            self.pre_order_traversal2(n._left,arr)
+            arr.append(n._value)
+            self.pre_order_traversal2(n._right,arr)
 
-def constructHeap2(a):
+def converttobst(root, arr): 
+    # Base Case 
+    if root is None: 
+        return 
+    # First update the left subtree 
+    converttobst(root._left, arr) 
+    # now update root's data delete the value from array 
+    root._value = arr[0]
+    arr.pop(0)
+    # Finally update the right subtree
+    converttobst(root._right, arr) 
+
+""" def constructHeap2(a):
     val = 0
     left = 1
     right = 2
@@ -82,11 +109,9 @@ def constructHeap2(a):
     lstLeftChild.extend(lstRightChild)
     s = set(lstLeftChild)
     diff = set(lstNodes) - s
-    print(diff)
+    print(diff) """
 
 def constructHeap(a):
-    alen = len(a)
-    arrHeap = ['x'] * alen
     dictNodes = {}
     left = 1
     right = 2
@@ -119,24 +144,12 @@ def constructHeap(a):
                 tn._right = n
             dictNodes[node[0]] = tn
 
-    print(len(dictNodes))
+    #loop to identiy Root node
     for k,v in dictNodes.items():
         if v._parent is None:
             root = v
             break
-    return v
-
-    #print(dictNodes.values())
-def treesort(root):
-    if root in None:
-        return
-    left = root._left
-    right = root._right
-    node = None
-    if left is not None and right is not None:
-        node = left if left._value < root._value else right
-    elif left is not None and right is None:
-        node = 
+    return root
 
 def swap(n):
     if n is None:
@@ -155,21 +168,27 @@ def mirror_BST2(node):
     
 def mirror_BST(a):
     root = constructHeap(a)
-    print('Root', root._value,'-- Left', root._left._value if root._left is not None else 'nil','Right',root._right._value if root._right is not None else 'nil','Parent', root._parent._value if root._parent is not None else 'nil')
+    #print('Root', root._value,'-- Left', root._left._value if root._left is not None else 'nil','Right',root._right._value if root._right is not None else 'nil','Parent', root._parent._value if root._parent is not None else 'nil')
     mirror_BST2(root)
-    print('Root', root._value,'-- Left', root._left._value if root._left is not None else 'nil','Right',root._right._value if root._right is not None else 'nil','Parent', root._parent._value if root._parent is not None else 'nil')
-    root.pre_order_traversal(root)
-    return '0 -2 -1 1'
+    #print('Root', root._value,'-- Left', root._left._value if root._left is not None else 'nil','Right',root._right._value if root._right is not None else 'nil','Parent', root._parent._value if root._parent is not None else 'nil')
+    #print('in Order')
+    arr = []
+    root.in_order_traversal2(root, arr)
+    arr.sort()
+    arrayToBST(root,arr)
+    arr = []
+    root.pre_order_traversal2(root, arr)
+    return ' '.join(str(x) for x in arr)
 
-#num_line = int(sys.stdin.readline())
-#for _ in range(num_line):
-    #a = [s.split(':') for s in sys.stdin.readline().split()]   
-    #print(mirror_BST(a))
+num_line = int(sys.stdin.readline())
+for _ in range(num_line):
+    a = [s.split(':') for s in sys.stdin.readline().split()]   
+    print(mirror_BST(a))
 
 
-a = [['0', 'x', 'x'], ['-1', '1', '-2'], ['-2', '0', 'x'], ['1', 'x', 'x']]
+#a = [['0', 'x', 'x'], ['-1', '1', '-2'], ['-2', '0', 'x'], ['1', 'x', 'x']]
 #a = [['0', '1', '2'], ['1', '3', 'x'], ['3', 'x', 'x'], ['2', '4', 'x'],['4', 'x', '5'],['5', 'x', 'x']]
 #a = [['3','x','x'],['1','2','x'],['2','3','x'],['0','1','x']]
 #a = [['0','x','1'],['1','x','2'],['2','x','3'],['3','x','x']]
 #a = [['0','1','x'],['1','x','2'],['2','3','x'],['3','x','4'],['4','x','x']]
-print(mirror_BST(a))
+#print(mirror_BST(a))
