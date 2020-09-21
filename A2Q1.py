@@ -87,6 +87,38 @@ class TreeNode:
             arr.append(n._value)
             self.pre_order_traversal2(n._right,arr)
 
+def mergeSort(arr): 
+    if len(arr) >1: 
+        mid = len(arr)//2 # Finding the mid of the array 
+        L = arr[:mid] # Dividing the array elements  
+        R = arr[mid:] # into 2 halves 
+  
+        mergeSort(L) # Sorting the first half 
+        mergeSort(R) # Sorting the second half 
+  
+        i = j = k = 0
+          
+        # Copy data to temp arrays L[] and R[] 
+        while i < len(L) and j < len(R): 
+            if L[i] < R[j]: 
+                arr[k] = L[i] 
+                i+= 1
+            else: 
+                arr[k] = R[j] 
+                j+= 1
+            k+= 1
+          
+        # Checking if any element was left 
+        while i < len(L): 
+            arr[k] = L[i] 
+            i+= 1
+            k+= 1
+          
+        while j < len(R): 
+            arr[k] = R[j] 
+            j+= 1
+            k+= 1
+
 def converttobst(root, arr): 
     # Base Case 
     if root is None: 
@@ -167,17 +199,15 @@ def mirror_BST2(node):
     mirror_BST2(node._right)
     
 def mirror_BST(a):
-    root = constructHeap(a)
-    #print('Root', root._value,'-- Left', root._left._value if root._left is not None else 'nil','Right',root._right._value if root._right is not None else 'nil','Parent', root._parent._value if root._parent is not None else 'nil')
-    mirror_BST2(root)
-    #print('Root', root._value,'-- Left', root._left._value if root._left is not None else 'nil','Right',root._right._value if root._right is not None else 'nil','Parent', root._parent._value if root._parent is not None else 'nil')
-    #print('in Order')
+    root = constructHeap(a) # 2n
+    mirror_BST2(root) # n
     arr = []
-    root.in_order_traversal2(root, arr)
-    arr.sort()
-    arrayToBST(root,arr)
+    root.in_order_traversal2(root, arr) # n
+    #arr.sort() #n**2
+    mergeSort(arr)
+    converttobst(root,arr) # n lg n
     arr = []
-    root.pre_order_traversal2(root, arr)
+    root.pre_order_traversal2(root, arr) # n
     return ' '.join(str(x) for x in arr)
 
 num_line = int(sys.stdin.readline())
