@@ -1,0 +1,18 @@
+def project_selection(no_projects, capital, profit, cost):
+    if capital > max(cost):
+        return capital + sum(nlargest(no_projects, profit))
+    minH = [[cost[x], x] for x in range(len(cost))]
+    maxH = []
+    heapify(minH)
+    while no_projects:
+        while minH and minH[0][0]<=capital:
+            _,idx = heappop(minH)
+            heappush(maxH, -profit[idx])
+        
+        if not maxH:
+            return "impossible"
+        
+        capital -= heappop(maxH)
+        no_projects-=1
+        
+    return capital
