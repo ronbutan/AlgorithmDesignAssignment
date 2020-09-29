@@ -116,25 +116,26 @@ class MinHeap:
         return self.__content[1]
     def print (self):
         print ('the content is', self.__content[1:self.__size+1])
+
 # def project_selection2(c, k, l):
 #     if c > l[-1]._cost:
 #         c = c + sum([x._profit for x in l[-k:]])
 #         return c
-#     minH = [[l[x]._cost, x] for x in range(len(l))]
-#     maxH = []
-#     heapify(minH)
+#     minHeap = [[l[x]._cost, x] for x in range(len(l))]
+#     maxHeap = []
+#     heapify(minHeap)
 #     while k:
-#         while minH and minH[0][0]<=c:
-#             a,idx = heappop(minH)
-#             heappush(maxH, -l[idx]._profit)
+#         while minHeap and minHeap[0][0]<=c:
+#             a,idx = heappop(minHeap)
+#             heappush(maxHeap, -l[idx]._profit)
         
-#         if not maxH:
+#         if not maxHeap:
 #             return "impossible"
         
-#         c -= heappop(maxH)
-#         k-=1
-        
+#         c = c - heappop(maxHeap)
+#         k = k - 1
 #     return c
+
 # def project_selection2(c,k,l):
 #     if c >= l[-1]._cost:
 #         c = c + sum([x._profit for x in l[-k:]])

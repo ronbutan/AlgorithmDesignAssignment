@@ -1,3 +1,4 @@
+from typing import List
 x = sum([i if i%2==0 else 1 for i in range(20)])
 print(x)
 
@@ -142,18 +143,114 @@ def findnumoccurence(s1,s2):
             break
     return num
 
-n = 785670
-count = 0
-while n > 0:
-    n = n // 10
-    count += 1
-print(count)
+'''
+get length of a number without converting to string
+'''
+# n = 785670
+# count = 0
+# while n > 0:
+#     n = n // 10
+#     count += 1
+# print(count)
 
-num = 76542
-reverse_number = 0
-print("Given Number ", num)
-while num > 0:
-    reminder = num % 10
-    reverse_number = (reverse_number * 10) + reminder
-    num = num // 10
-print("Revered Number ", reverse_number)
+'''
+reverse number without converting to string.
+'''
+# num = 76542
+# reverse_number = 0
+# print("Given Number ", num)
+# while num > 0:
+#     reminder = num % 10
+#     reverse_number = (reverse_number * 10) + reminder
+#     num = num // 10
+# print("Revered Number ", reverse_number)
+
+'''
+Reverse number pattern
+'''
+def reversenumberpattern(n):
+    l = []
+    nums = []
+    for i in range(1,n+1):
+        j = 1
+        nums = []
+        while j < (i+1):
+            nums.append(str(j))
+            j += 1
+        s = " ".join(nums)
+        l.append(s)
+    return "\n".join([s[::-1] for s in l])
+
+def evenpyramid(n):
+    j = 0
+    l = []
+    for i in range(0,n+1,2):
+        s = ''
+        s = s + str(i) + (i*2) * j
+        j += 1
+        l.append(s)
+    print(l)
+
+# def addlist(*l):
+#     l3 = [[ l1[i][j] + l2[i][j] for j in range(len(l1[i]))] for i in range(len(l1))]
+#     a = zip(*l)
+    
+#     return l3
+
+number_list = [4,5,6]
+str_list = [1,2,3]
+# Two iterables are passed
+result = zip(number_list, str_list)
+
+# Converting itertor to set
+result_set = set(result)
+print(result_set)
+#print(addlist([[1, -2, 3], [-4, 5, -6], [7, -8, 9]],[[1, 1, 0], [1, -2, 3], [-2, 2, -2]]))
+
+def sky_diff(M):
+    n = len(M)
+    #compute matrix with column values
+    l4 = [[M[j][i] for j in range(n)] for i in range(len(M[0]))]
+    minlist = [[min(l)] for l in l4]
+    maxlist = [[max(l)] for l in M]
+    for i in range(n):
+        for j in range(len(M[i])):
+            M[i][j] = maxlist[i][0] - minlist[j][0]
+    print(M)
+sky_diff([[4,1,8],[5,2,5],[9,7,1]])
+#sky_diff([[2,2],[2,2]])
+
+s = list(map(int,['1','3']))
+s1 = set('RON')
+
+# def longestCommonPrefix(self, strs: List[str]) -> str:
+#     n = len(strs)
+#     lenlst = [len(s) for s in strs]
+#     smallest = min(lenlst)
+#     minindices = [i for i,x in enumerate(strs) if len(x) == smallest]
+#     validPrefix = []
+#     isPass = True
+#     for short in range(len(minindices)):
+#         prefix = strs[minindices[short]]
+#         idx = len(prefix) - 1
+#         while idx > -1:
+#             if idx == 0:
+#                 prefix_ = prefix[0]
+#             else:
+#                 prefix_ = prefix[0:idx+1]
+#             for j in range(n):
+#                 if j == minindices[short]:
+#                     continue
+                
+#                 s = strs[j]
+#                 if idx == 0 and s[0] == prefix_:
+#                     continue
+#                 elif idx > 0 and s[0:idx+1] == prefix_:
+#                     continue
+#                 else
+#                     isPass = False
+#                     break
+#             if isPass:
+#                 validPrefix.append(prefix_)
+#             idx -= 1
+

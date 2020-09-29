@@ -1,0 +1,5 @@
+A2Q1 - 67841599c2ab (8 accepted)
+A2Q2 - 
+
+A2Q1 time complexity - O(n logn)
+A2Q2 time complexity - 
