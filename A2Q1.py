@@ -119,37 +119,25 @@ def mergeSort(arr):
             j+= 1
             k+= 1
 
-def converttobst(root, arr): 
+# conversion of binary tree to binary search tree will need to retain original structure of tree
+def convertToBst(root, arr): 
     # Base Case 
     if root is None: 
         return 
-    # First update the left subtree 
-    converttobst(root._left, arr) 
-    # now update root's data delete the value from array 
+    convertToBst(root._left, arr) 
     root._value = arr[0]
     arr.pop(0)
-    # Finally update the right subtree
-    converttobst(root._right, arr) 
+    convertToBst(root._right, arr) 
 
-""" def constructHeap2(a):
-    val = 0
-    left = 1
-    right = 2
-    lstNodes = [n[0] for n in a]
-    lstLeftChild = [n[left] for n in a if n[left] != 'x']
-    lstRightChild = [n[right] for n in a if n[right] != 'x']
-    lstLeftChild.extend(lstRightChild)
-    s = set(lstLeftChild)
-    diff = set(lstNodes) - s
-    print(diff) """
-
-def constructHeap(a):
+def constructTree(a):
     dictNodes = {}
     left = 1
     right = 2
     tn = None
     root = None
+    arr = []
     for node in a:
+        arr.append(int(node[0]))
         if node[left] == 'x' and node[right] == 'x':
             tn = TreeNode(0,int(node[0]),None)
             n = dictNodes.get(node[0])
@@ -177,12 +165,13 @@ def constructHeap(a):
             dictNodes[node[0]] = tn
 
     #loop to identiy Root node
-    for k,v in dictNodes.items():
+    for v in dictNodes.values():
         if v._parent is None:
             root = v
             break
-    return root
+    return root,arr
 
+# swap position of nodes
 def swap(n):
     if n is None:
         return
@@ -199,22 +188,38 @@ def mirror_BST2(node):
     mirror_BST2(node._right)
     
 def mirror_BST(a):
-    root = constructHeap(a) # 2n
+    root,arr = constructTree(a) # 2n
     mirror_BST2(root) # n
-    arr = []
-    root.in_order_traversal2(root, arr) # n
-    #arr.sort() #n**2
-    mergeSort(arr)
-    converttobst(root,arr) # n lg n
+    mergeSort(arr) # nlgn
+    convertToBst(root,arr) # n lg n
     arr = []
     root.pre_order_traversal2(root, arr) # n
     return ' '.join(str(x) for x in arr)
 
 num_line = int(sys.stdin.readline())
 for _ in range(num_line):
-    a = [s.split(':') for s in sys.stdin.readline().split()]   
+    a = [s.split(':') for s in sys.stdin.readline().split()]
     print(mirror_BST(a))
 
+
+'''
+Analysis:
+
+Steps
+=====
+1. Construct binary tree from input - n
+2. Loop thru Dictionary object to identify root node - n
+3. Construct mirror of binary tree - n
+4. Sort array of tree node values using MergeSort - n logn
+5. Convert binary tree to binary search tree - n logn
+6. Preorder Traversal of binary search tree nodes - n
+7. Join list values to get ouput result - n
+
+Total   = n + n + n + n logn + n logn + n + n
+        = 2n logn + 5n
+
+Time Complexity = O(n logn)
+'''
 
 #a = [['0', 'x', 'x'], ['-1', '1', '-2'], ['-2', '0', 'x'], ['1', 'x', 'x']]
 #a = [['0', '1', '2'], ['1', '3', 'x'], ['3', 'x', 'x'], ['2', '4', 'x'],['4', 'x', '5'],['5', 'x', 'x']]
