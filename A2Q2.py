@@ -1,49 +1,36 @@
 import sys
+from heapq import heappop, heappush, heapify
 
-class Node:
-    def __init__ (self, cost, revenue):
-        self._cost = cost
-        self._revenue = revenue
-        self._profit = revenue - cost
-    def __str__(self):
-        return "{0}:{1}:{2}".format(self._cost,self._revenue,self._profit)
-    def __le__(self, other):
-        return self._cost <= other._cost
-    def __lt__(self,other):
-        return self._cost < other._cost
-    def __ge__(self, other):
-        return self._cost >= other._cost
-    def __gt__(self, other):
-        return self._cost > other._cost
-    def __repr__(self):
-        return self.__str__()
+def project_selection(c,k):
+    global listCost,listProfit
+    if c >= max(listCost): # n
+        l = sorted(listProfit) # n logn
+        mostProfit = sum([x for x in l[-k:]]) # n
+        c += mostProfit
+        return c
+    minCostHeap = [[listCost[i], i] for i in range(len(listCost))]
+    maxProfitHeap = []
+    heapify(minCostHeap) # n
+    while k > 0:
+        while minCostHeap and minCostHeap[0][0] <= c:# n
+            proj = heappop(minCostHeap)
+            idx = proj[1]
+            heappush(maxProfitHeap, -listProfit[idx]) # log n
 
-def project_selection2(c,k,lstprojects):
-    # iterate backwards from most profitable projects
-    while k and lstprojects:
-        # reset pointer to end of list (most profitable project)
-        i = len(lstprojects) - 1
-        while i > -1 and lstprojects[i]._cost > c:
-            i -= 1 # decrement pointer as insufficient capital
-        if i < 0:
-            return -1
-        c += lstprojects[i]._profit
-        lstprojects.pop(i)
-        k -= 1
+        # implies no more profitable project left to choose
+        if not maxProfitHeap:
+            return 'impossible'
+        
+        c = c + -(heappop(maxProfitHeap))
+        k = k - 1
     return c
-
-def project_selection(c, k):
-    global cr
-    numprojects = len(cr)
-    lstprojects = [Node(cr[p][0], cr[p][1]) for p in range(numprojects)]
-    lstprojects.sort(key=lambda x: x._profit)
-    m = project_selection2(c,k,lstprojects)
-    return 'impossible' if m == -1 else m
 
 a = [int(s) for s in sys.stdin.readline().split()]
 if a[0] > 100000:
     print('impossible')
 cr = [[int(t) for t in s.split(':')] for s in sys.stdin.readline().split()]
+listCost = [s[0] for s in cr]
+listProfit = [s[1] - s[0] for s in cr]
 for _ in range(a[1]):
     b = [int(s) for s in sys.stdin.readline().split()]
     c, k = b[0], b[1]
@@ -52,20 +39,27 @@ for _ in range(a[1]):
 '''
 Concept:
 ========
-First, represent each project as a Node with properties Cost, Revenue and Profit
-Second, sort list of Node objects by profit (most profitable at the end of list)
-Third, iterate through the list of projects selecting the most profitable project that can be undertaken based on current captial
-Fourth, iteration stops upon the number of projects fulfilled or there are no more projects left for selection
+First, create 2 lists, listCost and listProfit, to hold the cost and profit (i.e. revenue - cost) respectively
+Second, determine if capital is larger or equals than all projects for selection
+- if capital is larger than or equals to all project cost, select the most profitable k projects and sum the profits
+
+Third, create a minimum heap based on the cost of projects. Each heap object also bears an index property for macthing against its corresponding profit in listProfit
+Fourth, iterate based on the number of projects to be selected and within each iteration, iterate the minimum cost heap.
+- pop the minimum cost heap and push its corresponding value to a maximum profit heap and exits the inner iteration
+
+Fifth, pop the maximum profit heap and add the profit ot exisitng capital
+- return 'impossible' if there are no more projects to select from the maximum profit heap
 
 Analysis:
 =========
-1. Python list sort on profit based on worst case time complexity - n logn
-2. Outer loop to loop based on number of projects to be selected, k and number of projects left for selection - n
-3. Inner loop to pick next most profitable project based on current available capital - n
+1. Python maximum function - n
+2. Python list sort function worst time complexity - n logn
+3. Sum function - n
+4. Loop to iterate projects - n
+4i. heap push into profit heap within loop - logn
 
-Total   = n logn + (n * n)
-        = n^2 + n logn
+Total   = n + n logn + n + (n * logn)
+        = 2n + 2n logn
 
-Time Complexity = O(n^2)
-
+Time Complexity = O(n logn)
 '''
