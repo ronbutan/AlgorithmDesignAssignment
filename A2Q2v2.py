@@ -59,7 +59,7 @@ Fourth, iteration stops upon the number of projects fulfilled or there are no mo
 
 Analysis:
 =========
-1. Python list sort on profit based on worst case time complexity - n logn
+1. List sort on profit based on worst case time complexity - n logn
 2. Outer loop to loop based on number of projects to be selected, k and number of projects left for selection - n
 3. Inner loop to pick next most profitable project based on current available capital - n
 

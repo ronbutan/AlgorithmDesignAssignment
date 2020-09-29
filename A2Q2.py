@@ -52,8 +52,8 @@ Fifth, pop the maximum profit heap and add the profit ot exisitng capital
 
 Analysis:
 =========
-1. Python maximum function - n
-2. Python list sort function worst time complexity - n logn
+1. Find the maximum cost amongst all projects - n
+2. List sort worst time complexity - n logn
 3. Sum function - n
 4. Loop to iterate projects - n
 4i. heap push into profit heap within loop - logn
