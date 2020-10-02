@@ -37,13 +37,20 @@ def maximumSubMatrix(matrix):
                 maxRight = right
                 maxUp = up
                 maxDown = down
-    print(maxLeft, maxRight,maxUp, maxDown)
+    print(maxLeft, maxRight,maxUp, maxDown, ultimateSum)
+
+# matrix = [
+#     [1, 2, -1, 4],
+#     [-8, -3, 4, 2],
+#     [3, 8, 10, -8],
+#     [-4, -1, 1, 7]
+# ]
 
 matrix = [
-    [1, 2, -1, 4],
-    [-8, -3, 4, 2],
-    [3, 8, 10, -8],
-    [-4, -1, 1, 7]
+    [1,0,1,0,0],
+    [1,0,1,1,1],
+    [1,1,1,1,1],
+    [1,0,0,1,0]
 ]
 
 # matrix = [

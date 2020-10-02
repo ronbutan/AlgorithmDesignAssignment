@@ -24,16 +24,17 @@ def twoSum(nums, target):
             if nums[j] == left:
                 index2 = j
                 return [index1,index2]
-print(twoSum([2,7,11,15],9))
+#print(twoSum([2,7,11,15],9))
 
-def isPalindrome(self, x):
+def isPalindrome(x):
     s = str(x)
     if len(s) == 2:
         return s[0] == s[1]
     mid = len(s) // 2
     s1 = s[0:mid]
-    s2 = s[mid+1]
+    s2 = s[mid:] if len(s) % 2 == 0 else s[mid+1:]
     return s1 == s2[::-1]
+print(isPalindrome("racecar"))
 
 def removeElement(nums, val):
     i = 0
@@ -131,7 +132,6 @@ def balancestring(s1,s2):
 def findnumoccurence(s1,s2):
     s2 = s2.lower()
     s1 = s1.lower()
-    j = 0
     pointer = 0
     num = 0
     while 1:
@@ -254,3 +254,46 @@ s1 = set('RON')
 #                 validPrefix.append(prefix_)
 #             idx -= 1
 
+def spiralOrder(matrix):
+    if not matrix:
+        return matrix
+    
+    aux = []
+    rLen = len(matrix)
+    cLen = len(matrix[0])
+    left = 0
+    right = cLen - 1
+    up = 0
+    down = rLen - 1
+    while left <= right and up <= down:
+        aux.extend([i for i in matrix[up][left:right+1]])
+        if up < down:
+            aux.extend([i[right] for i in matrix[up+1:down]])
+        if left <= right and up < down:
+            aux.extend([i for i in matrix[down][left:right+1][::-1]])
+        if up < down and left < right:
+            aux.extend([i[left] for i in matrix[up+1:down][::-1]])
+        right = right - 1
+        left = left + 1
+        up = up + 1
+        down = down - 1
+        print(aux)
+
+mat = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+
+#mat = [[3],[2]]
+# mat = [
+#     [7],
+#     [9],
+#     [6]
+# ]
+# mat = [
+#   [1, 2, 3],
+#   [4, 5, 6],
+#   [7, 8, 9]
+# ]
+spiralOrder(mat)
