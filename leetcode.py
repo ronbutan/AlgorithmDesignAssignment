@@ -162,3 +162,31 @@ def isPalindrome(s: str) -> bool:
         return True
     return False
 print(isPalindrome("ron tan"))
+
+# 45. Jump Game II
+
+'''
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Your goal is to reach the last index in the minimum number of jumps.
+'''
+def jump(nums: List[int]) -> int:
+    if not nums:
+        return 0
+    if nums[0] == 0:
+        return 0
+    nLen = len(nums)
+    if nLen == 1:
+        return 0
+    moves = [float('inf')] * nLen
+    moves[0] = 0
+    for i in range(0,nLen):
+        n = nums[i]
+        while n:
+            if i + n < nLen:
+                least = min(moves[i] + 1, moves[i+n])
+                moves[i+n] = least
+            n-=1
+    return moves[-1]
