@@ -190,3 +190,31 @@ def jump(nums: List[int]) -> int:
                 moves[i+n] = least
             n-=1
     return moves[-1]
+
+
+# 415. Add Strings
+'''
+Given two non-negative integers num1 and num2 represented as string, return the sum of num1 and num2.
+'''
+def addStrings(self, num1: str, num2: str) -> str:
+    carry = 0
+    n1 = len(num1) - 1
+    n2 = len(num2) - 1
+    n3 = n1 if n1 >= n2 else n2
+    res = []
+    while n2 >= 0 or n1 >= 0:
+        dig1 = ord(num1[n1]) - ord("0") if n1 >= 0 else 0
+        dig2 = ord(num2[n2]) - ord("0") if n2 >= 0 else 0
+        
+        add = dig1 + dig2 + carry
+        
+        carry = 1 if add > 9 else 0
+        res.append(str(add%10))
+        n1 -=1
+        n2-=1
+        
+    if carry == 1:
+        res.append(str(carry))
+    res = res[::-1]
+    
+    return "".join(res)
