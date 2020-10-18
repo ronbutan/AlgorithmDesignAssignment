@@ -9,5 +9,5 @@ print(int('260d',16))
 print(int('67',16))
 
 random.seed(784)
-l = [format(random.randint(1000,2200),'02x') for i in range(1000)]
+l = [format(random.randint(1000,2200),'02X') for i in range(1000)]
 print(" ".join(l))

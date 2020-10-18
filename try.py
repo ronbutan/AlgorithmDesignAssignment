@@ -683,6 +683,268 @@ s1 = set('RON')
 #                 validPrefix.append(prefix_)
 #             idx -= 1
 
+def printSinWave(wave_height, wave_length): 
+  
+    # inner space and outer space. 
+    Is = 1
+    os = 2
+  
+    # for loop for height of wave 
+    for i in range(1, wave_height + 1): 
+  
+        # for loop for wave length 
+        for j in range(1, wave_length + 1): 
+  
+            # intermediate spaces 
+            for k in range(1, os + 1): 
+                print(end = " ") 
+              
+            # put any symbol 
+            print("0", end = "") 
+  
+            for k in range(1, Is + 1):  
+                print(end = " ")          
+  
+            # put any symbol 
+            print("0", end = "") 
+  
+            for k in range(1, os + 1): 
+                print(end = " ") 
+              
+            print(end = " ") 
+          
+        # set a value of os to 1 if i+1 Is not  
+        # equal to wave height or 0 otherwise 
+        if (i + 1 != wave_height): 
+            os = 1
+        else: 
+            os = 0
+              
+        # set value of Is to 3 if i+1 Is not  
+        # equal to wave height or 5 otherwise 
+        if (i + 1 != wave_height): 
+            Is = 3
+        else: 
+            Is = 5
+        print()  
+  
+# Driver code 
+wave_height, wave_length = 5, 10
+printSinWave(wave_height, wave_length) 
+  
+# This code is contributed by  
+# Mohit kumar 29 
+
+# Python3 implementation to print 
+# reverse wave form of matrix 
+# function to print reverse wave  
+# form for a given matrix 
+def wavePrint(m, n, arr): 
+    j = n - 1
+    wave = 1
+      
+    # m     - Ending row index 
+    # n     - Ending column index 
+    # i, j     - Iterator 
+    # wave     - for Direction 
+    # wave = 1 - Wave direction down 
+    # wave = 0 - Wave direction up  
+    while j >= 0: 
+          
+        # Check whether to go in 
+        # upward or downward 
+        if wave == 1: 
+      
+            # Print the element of the  
+            # matrix downward since the 
+                        # value of wave = 1 
+            for i in range(m): 
+                print(arr[i][j], end = " "), 
+            wave = 0
+            j -= 1
+              
+              
+        else: 
+            # Print the elements of the  
+            # matrix upward since the  
+            # value of wave = 0 
+            for i in range(m - 1, -1, -1): 
+                print(arr[i][j], end = " "), 
+                  
+            wave = 1
+            j -= 1
+  
+# Driver code 
+arr = [ [ 1, 2, 3, 4 ], 
+        [ 5, 6, 7, 8 ], 
+        [ 9, 10, 11, 12 ], 
+        [ 13, 14, 15, 16 ] ] 
+R = 4
+C = 4
+wavePrint(R, C, arr) 
+  
+# This code is contributed by  
+# Upendra Singh Bartwal 
+# print array in Z form
+# Python program to print a  
+# square matrix in Z form 
+def Zform():
+    arr = [[4, 5, 6, 8],  
+            [1, 2, 3, 1],  
+            [7, 8, 9, 4],  
+            [1, 8, 7, 5]] 
+    
+    n = len(arr[0]) 
+                    
+    i = 0
+    for j in range(0, n-1): 
+        print(arr[i][j], end = ' ')  
+            
+    k = 1
+    for i in range(0, n): 
+        for j in range(n, 0, -1): 
+            if(j == n-k): 
+                print(arr[i][j], end = ' ')  
+                break;  
+        k+= 1
+    
+    # Print last row 
+    i = n-1;  
+    for j in range(0, n): 
+        print(arr[i][j], end = ' ') 
+
+# Python 3 program to print 
+# matrix in zig-zag form 
+  
+# Method to print matrix  
+# in zig-zag form 
+def printZigZag(row, col, a): 
+    evenRow = 0 # starts from the first row 
+    oddRow = 1 # starts from the next row 
+  
+    while evenRow < row:  
+        for i in range(col): 
+              
+            # evenRow will be printed 
+            # in the same direction 
+            print(str(a[evenRow][i] ),  
+                           end = " ") 
+                             
+        # Skipping next row so as 
+        # to get the next evenRow 
+        evenRow = evenRow + 2
+              
+        if oddRow < row: 
+            for i in range(col - 1, -1, -1): 
+                  
+                # oddRow will be printed in 
+                # the opposite direction 
+                print(str(a[oddRow][i]),  
+                             end = " ") 
+                  
+        # Skipping next row so as  
+        # to get the next oddRow 
+        oddRow = oddRow + 2
+  
+# Driver Code  
+r = 3
+c = 5
+  
+mat = [[1, 2, 3, 4, 5], 
+       [6, 7, 8, 9, 10], 
+       [11, 12, 13, 14, 15]]; 
+  
+printZigZag(r , c , mat) 
+  
+# This code is contributed  
+# by ChitraNayal 
+
+# Python3 Code to Print a given   
+# matrix in reverse spiral form 
+  
+# This is a modified code of 
+# https:#www.geeksforgeeks.org/print-a-given-matrix-in-spiral-form/ 
+  
+def ReversespiralPrint(m, n, a): 
+  
+    # Large array to initialize it 
+    # with elements of matrix 
+    b = [0 for i in range(100)] 
+  
+    #/* k - starting row index 
+    #l - starting column index*/ 
+    i, k, l = 0, 0, 0
+  
+    # Counter for single dimension array 
+    # in which elements will be stored 
+    z = 0
+  
+    # Total elements in matrix 
+    size = m * n 
+  
+    while (k < m and l < n): 
+          
+        # Variable to store value of matrix. 
+        val = 0
+  
+        # Print the first row  
+        # from the remaining rows  
+        for i in range(l, n): 
+              
+            # printf("%d ", a[k][i]) 
+            val = a[k][i] 
+            b[z] = val 
+            z += 1
+        k += 1
+  
+        # Print the last column 
+        # from the remaining columns 
+        for i in range(k, m): 
+  
+            # printf("%d ", a[i][n-1]) 
+            val = a[i][n - 1] 
+            b[z] = val 
+            z += 1
+  
+        n -= 1
+  
+        # Print the last row  
+        # from the remaining rows 
+        if (k < m): 
+            for i in range(n - 1, l - 1, -1): 
+                  
+                # printf("%d ", a[m-1][i]) 
+                val = a[m - 1][i] 
+                b[z] = val 
+                z += 1
+  
+        m -= 1
+  
+        # Print the first column  
+        # from the remaining columns  
+        if (l < n): 
+            for i in range(m - 1, k - 1, -1): 
+                  
+                # printf("%d ", a[i][l]) 
+                val = a[i][l] 
+                b[z] = val 
+                z += 1
+            l += 1
+  
+    for i in range(size - 1, -1, -1): 
+        print(b[i], end = " ") 
+  
+# Driver Code
+R, C = 3, 6
+a = [[1, 2, 3, 4, 5, 6], 
+     [7, 8, 9, 10, 11, 12], 
+     [13, 14, 15, 16, 17, 18]] 
+  
+ReversespiralPrint(R, C, a) 
+  
+# This code is contributed by mohit kumar 
+
+
 def spiralOrder(matrix):
     if not matrix:
         return matrix
