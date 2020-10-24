@@ -10,4 +10,6 @@ print(int('67',16))
 
 random.seed(784)
 l = [format(random.randint(1000,2200),'02X') for i in range(1000)]
-print(" ".join(l))
+#print(" ".join(l))
+
+print(min(2,2))
