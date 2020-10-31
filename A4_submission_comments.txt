@@ -1,4 +1,1 @@
-A3Q1 - f681f48dad42 (8 accepted)
-A3Q2 - 93574f4a9d15 (10 accepted)
-
-A3Q1 time complexity - O(n^2)
+A4Q1 - d92cf23d97d1 (10 accepted)
