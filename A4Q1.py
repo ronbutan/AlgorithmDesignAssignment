@@ -1,5 +1,4 @@
 import sys
-import time
 
 rowsTaken = []
 colsTaken = []
@@ -15,12 +14,6 @@ BACK_DIAG_STATE = []
 FORWARD_DIAGONAL_CODE = [[r + c for c in range(BOARD_SIZE)] for r in range(BOARD_SIZE)]
 # number codes for \ direction
 BACK_DIAGONAL_CODE = [[r - c + (BOARD_SIZE - 1) for c in range(BOARD_SIZE)] for r in range(BOARD_SIZE)]
-BOARD = []
-
-# for i in BACK_DIAGONAL_CODE:
-#     print(i)
-# for i in FORWARD_DIAGONAL_CODE:
-#     print(i)
 
 def isValidPosition(row, col):
     global FORWARD_DIAGONAL_CODE,BACK_DIAGONAL_CODE,FRONT_DIAG_STATE,BACK_DIAG_STATE,ROW_STATE
@@ -60,7 +53,6 @@ def fourteen_queen(pos):
     x = (BOARD_SIZE << 1) - 1
     FRONT_DIAG_STATE = [False for _ in range(x)]
     BACK_DIAG_STATE = [False for _ in range(x)]
-    BOARD = [[1 for c in range(BOARD_SIZE)] for r in range(BOARD_SIZE)]
 
     for queenOnBoard in pos:
         # get row and column index of queens on board
@@ -70,7 +62,6 @@ def fourteen_queen(pos):
         FRONT_DIAG_STATE[FORWARD_DIAGONAL_CODE[r][c]] = True
         BACK_DIAG_STATE[BACK_DIAGONAL_CODE[r][c]] = True
         ROW_STATE[r] = True
-        BOARD[r][c] = 0
         
     solveNQueens(nQueensRemaining,0,rowsLeft,colsLeft)
     
@@ -82,6 +73,4 @@ for _ in range(num_case):
     n, pos = len(s) // 2, []
     for i in range(n):
         pos.append((int(s[2*i]), int(s[2*i+1])))
-    #start_time = time.time()
     print(fourteen_queen(pos))
-    #print("--- %s seconds ---" % (time.time() - start_time)) 
