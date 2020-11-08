@@ -3,7 +3,7 @@ import time
 import heapq
 
 def escape(n, roadmap, qrtn, spaceship):
-    RESULT = [0 if i+1 in spaceship else float('inf') for i in range(n + 1)]
+    RESULT = [0 if i in spaceship else float('inf') for i in range(n + 1)]
     lstRemainingCities = [i for i in range(1,n + 1) if i not in spaceship]
     spaceshipindex = [True if i in spaceship else False for i in range(0, n + 1)]
     unvisited = []
@@ -12,15 +12,15 @@ def escape(n, roadmap, qrtn, spaceship):
     ORANGE = 'O'
     RED = 'R'
     
-    # for id in spaceship:
-    #     spaceshipcity = roadmap[id]
-    #     for city,blinks in spaceshipcity.items():
-    #         if blinks < 0:
-    #             RESULT[city] = min(RESULT[city], abs(blinks) + qrtn[id][1])
-    #         else:
-    #             RESULT[city] = min(RESULT[city], blinks)
-    #         lstRemoval.append(city)
-    # lstRemainingCities = [i for i in lstRemainingCities if i not in lstRemoval]
+    for id in spaceship:
+        spaceshipcity = roadmap[id]
+        for city,blinks in spaceshipcity.items():
+            if blinks < 0:
+                RESULT[city] = min(RESULT[city], abs(blinks) + qrtn[id][1])
+            else:
+                RESULT[city] = min(RESULT[city], blinks)
+            lstRemoval.append(city)
+    lstRemainingCities = [i for i in lstRemainingCities if i not in lstRemoval]
     for id in lstRemainingCities:
         unvisited = []
         neighbours = roadmap[id]

@@ -1,14 +1,14 @@
 import sys
+import time
 import heapq
 from collections import defaultdict
 
 def escape(n, roadmap, qrtn, spaceship):
     spaceshipindex = [True if i in spaceship else False for i in range(n)]
-    RESULT_STATUS = [i == 0 or spaceshipindex[i] for i in range(n)]
+    RESULT_STATUS = [i == 0 for i in range(n)]
     RESULT = [0 if spaceshipindex[i] else float('inf') for i in range(n)]
     queue = []
     visited = defaultdict(int)
-    seen = defaultdict(int)
     GREEN = 'G'
     ORANGE = 'O'
     RED = 'R'
@@ -19,19 +19,14 @@ def escape(n, roadmap, qrtn, spaceship):
         cityGreenKey, cityOrangeKey, cityRedKey = "{0}{1}".format(cityId, GREEN), "{0}{1}".format(cityId, ORANGE), "{0}{1}".format(cityId, RED)
         GRAPH[cityGreenKey][cityOrangeKey] = qrtn[cityId][1]
         GRAPH[cityOrangeKey][cityRedKey] = qrtn[cityId][0]
+
         if spaceshipindex[cityId]:
-            heapq.heappush(queue, [qrtn[cityId][1], cityOrangeKey])
-            visited[cityGreenKey] = 1
+            heapq.heappush(queue, [0, cityGreenKey])
         for neighbourId,blinks in neighbours:
             neighbourGreenKey, neighbourOrangeKey, neighbourRedKey = "{0}{1}".format(neighbourId, GREEN), "{0}{1}".format(neighbourId, ORANGE), "{0}{1}".format(neighbourId, RED)
             if blinks >= 0: # trusted, only O->O or G->G
                 GRAPH[neighbourGreenKey][cityGreenKey] = blinks
                 GRAPH[neighbourOrangeKey][cityOrangeKey] = blinks
-                if spaceshipindex[cityId]:
-                    computed = seen[neighbourGreenKey]
-                    if computed == 0 or computed > blinks:
-                        heapq.heappush(queue, [blinks, neighbourGreenKey])
-                        seen[neighbourGreenKey] = blinks
             else: # untrusted, 0->G, R->O
                 blinks = -blinks
                 GRAPH[neighbourOrangeKey][cityGreenKey] = blinks
@@ -40,10 +35,7 @@ def escape(n, roadmap, qrtn, spaceship):
         mindist, v = heapq.heappop(queue)
         cityId = int(v[:-1], 10)
         health = v[-1]
-        if visited[v] > 0 and not spaceshipindex[cityId]:
-            continue
         visited[v] = 1
-        seen[v] = mindist
         if health == GREEN:
             RESULT[cityId] = min(RESULT[cityId], mindist)
             RESULT_STATUS[cityId] = True
@@ -52,15 +44,14 @@ def escape(n, roadmap, qrtn, spaceship):
         neighbours = GRAPH[v].items()
         for neighbourId,blinks in neighbours:
             if visited[neighbourId] == 0:
-                computed = seen[neighbourId]
                 blinks += mindist
-                if (computed == 0) or (computed > blinks):
-                    heapq.heappush(queue, [blinks, neighbourId])
-                    seen[neighbourId] = blinks
+                heapq.heappush(queue, [blinks, neighbourId])
+        #print(queue)
     return RESULT[1:]
 
 n = int(sys.stdin.readline(), 10)
 N = n + 1
+#roadmap = defaultdict(lambda: defaultdict(dict))
 roadmap = {i:{} for i in range(1, N)}
 s = sys.stdin.readline().split()
 for t in s:
@@ -78,15 +69,6 @@ for t in s:
     qrtn[i] = int(u[0], 10), int(u[1], 10)
     i += 1
 spaceship = [int(t, 10) for t in sys.stdin.readline().split()]
+#start_time = time.time()
 print(' '.join([str(i) for i in escape(N, roadmap, qrtn, spaceship)]))
-
-'''
-Concept:
-=========
-1. Create a GRAPH of n * 3 nodes with each city expanded to its Green, Orange and Red states
-2. Orange states will be connected by a edge with cost of Orange to Green quarantine blinks
-3. Red states will be connected by a edge with cost of Red to Orange quarantine blinks
-4. Run Dijkstra algorithm backed with a minimum heap
-5. Start with spaceship cities and traverse to all other cities
-6. We will capture results upon visiting a city in Green state
-'''
+#print("--- %s seconds ---" % (time.time() - start_time))
