@@ -84,9 +84,11 @@ print(' '.join([str(i) for i in escape(N, roadmap, qrtn, spaceship)]))
 Concept:
 =========
 1. Create a GRAPH of n * 3 nodes with each city expanded to its Green, Orange and Red states
-2. Orange states will be connected by a edge with cost of Orange to Green quarantine blinks
-3. Red states will be connected by a edge with cost of Red to Orange quarantine blinks
-4. Run Dijkstra algorithm backed with a minimum heap
+2. Orange states will be connected by an edge with cost of Orange to Green quarantine blinks
+3. Red states will be connected by an edge with cost of Red to Orange quarantine blinks
+4. Allowed edges from trusted cities are Green to Green and Orange to Orange
+5. Allowed edges from untrusted cities are Orange to Green and Red to Orange (reverse direction)
+4. Run Dijkstra algorithm supported with a minimum heap
 5. Start with spaceship cities and traverse to all other cities
 6. We will capture results upon visiting a city in Green state
 '''

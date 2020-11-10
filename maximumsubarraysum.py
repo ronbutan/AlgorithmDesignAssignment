@@ -22,5 +22,7 @@ def maxSubArraySum(numbers,size):
 
 a = [-13, 1, -3, -25, -20, -3, -16, -23, -12, 20, 50, -15, -4, -7,-1] 
 b = [10, 8, -1, -2, -19, -3, 20, 20, 6]
+c = [100, -20, -30, -1, -9]
 print("Maximum contiguous sum is", maxSubArraySum(a,len(a)))
 print("Maximum contiguous sum is", maxSubArraySum(b,len(b)))
+print("Maximum contiguous sum is", maxSubArraySum(c,len(c)))

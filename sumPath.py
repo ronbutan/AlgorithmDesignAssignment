@@ -85,6 +85,3 @@ root = TreeNode(-2,node1,node2)
 
 #root = TreeNode(1,None,None)
 pathSum(root, -5)
-
-
-    
